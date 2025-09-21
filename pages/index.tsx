@@ -37,9 +37,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     const res = await fetch(`https://rahastudio.com/api/save.php`, {
       method: "POST",
       body: form,
-      // اگر دامنه‌ها متفاوت‌اند و CORS خطا داد:
-      // mode: "cors",
-      // credentials: "omit",
     });
 
     if (res.ok) {

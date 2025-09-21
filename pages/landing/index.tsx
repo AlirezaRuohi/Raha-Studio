@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 
 export default function Landing() {
-  // اگر در next.config.ts basePath تعریف کرده‌ای، این را ست کن
   const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   const files = useMemo(
@@ -38,13 +37,11 @@ export default function Landing() {
 
   const downloadAll = useCallback(async () => {
     setErrList([]);
-    // URLs نهایی (با basePath)
     const items = files.map(f => ({
       url: `${base}${f.path}`,
       filename: f.label,
     }));
 
-    // پیش‌بررسی وجود فایل‌ها
     const results = await Promise.all(items.map(it => checkExists(it.url)));
 
     const missing: string[] = [];
@@ -54,14 +51,12 @@ export default function Landing() {
 
     if (missing.length) {
       setErrList(missing);
-      // همچنان فایل‌های موجود را دانلود کن
       items.forEach((it, i) => {
         if (results[i]) download(it.url, it.filename);
       });
       return;
     }
 
-    // همه موجودند → همزمان دانلود کن
     items.forEach(it => download(it.url, it.filename));
   }, [base, files]);
 
