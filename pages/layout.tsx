@@ -1,12 +1,3 @@
-import type { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "رها استودیو",
-  description: "دریافت فایل ",
-  icons: {
-    icon: "/logo.png",
-  },
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fa" dir="rtl">
