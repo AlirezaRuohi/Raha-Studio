@@ -47,8 +47,8 @@ export default function Landing() {
     try {
       for (const f of files) {
         await downloadOne(f);
-        setDone((prev) => [...prev, f.label]);
-        await new Promise((r) => setTimeout(r, 250));
+        setDone((p) => [...p, f.label]);
+        await new Promise((r) => setTimeout(r, 220));
       }
     } catch (e: any) {
       setErr(e?.message || "Download failed");
@@ -65,39 +65,45 @@ export default function Landing() {
 
       <main dir="rtl" className="page">
         <section className="card">
-          {/* Header */}
-          <div className="header">
-            <div className="logoWrap">
-              <Image
-                src="/logo.png"
-                alt="لوگوی سایت"
-                width={64}
-                height={64}
-                priority
-                className="logo"
-              />
+          {/* هدر */}
+          <header className="header">
+            <div className="brand">
+              <Image src="/logo.png" alt="لوگوی سایت" width={54} height={54} className="logo" />
+              <div className="titles">
+                <h1>دانلود فایل‌ها</h1>
+                <p>ثبت‌نام با موفقیت انجام شد ✅</p>
+              </div>
             </div>
-            <div className="titles">
-              <h1 className="title">درخواست ثبت شد ✅</h1>
-              <p className="subtitle">سلطان، فایل‌ها آمادهٔ دانلودن 👇</p>
-            </div>
-          </div>
+
+            <button
+              onClick={downloadAll}
+              disabled={busy}
+              className="btn btnAll"
+              aria-label="دانلود همه فایل‌ها"
+            >
+              📥 دانلود همه
+            </button>
+          </header>
+
+          {/* توضیح کوتاه */}
+          <p className="lead">فایل‌های زیر آمادهٔ دانلود هستند. می‌توانید جداگانه یا همه را با هم دانلود کنید.</p>
 
           {/* لیست فایل‌ها */}
-          <div className="list">
+          <div className="grid">
             {files.map((f) => (
               <div key={f.path} className="item">
-                <div className="itemInfo">
-                  <span className="badge">PDF</span>
+                <div className="info">
+                  <span className="dot" aria-hidden />
                   <div className="meta">
-                    <div className="name">{f.label}</div>
-                    <div className="path">{f.path}</div>
+                    <div className="name" title={f.label}>{f.label}</div>
+                    <div className="path" title={f.path}>{f.path}</div>
                   </div>
                 </div>
                 <button
                   onClick={() => downloadOne(f)}
                   disabled={busy}
                   className="btn btnSingle"
+                  aria-label={`دانلود ${f.label}`}
                 >
                   دانلود
                 </button>
@@ -105,14 +111,7 @@ export default function Landing() {
             ))}
           </div>
 
-          {/* دانلود همه */}
-          <div className="actions">
-            <button onClick={downloadAll} disabled={busy} className="btn btnAll">
-              📥 دانلود همه
-            </button>
-          </div>
-
-          {/* وضعیت/خطا */}
+          {/* وضعیت */}
           <div className="status">
             {busy && <span>در حال آماده‌سازی دانلود…</span>}
             {!busy && done.length > 0 && !err && <span>دانلود {done.length} فایل انجام شد.</span>}
@@ -121,147 +120,156 @@ export default function Landing() {
         </section>
       </main>
 
+      {/* استایل‌ها */}
       <style jsx>{`
+        :root {
+          --bg1: #ffd93d;
+          --bg2: #ffb100;
+          --card-bg: rgba(255,255,255,0.28);
+          --card-brd: rgba(255,255,255,0.38);
+          --ink: #212529;
+          --muted: #555;
+          --accent: #ffb100;
+          --accent-2: #ffd93d;
+          --line: rgba(0,0,0,0.06);
+        }
+
         .page {
           min-height: 100vh;
-          margin: 0;
-          background: linear-gradient(135deg, #ffd93d, #ffb100);
+          background: linear-gradient(135deg, var(--bg1), var(--bg2));
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 24px 12px;
+          padding: 20px 12px;
           font-family: Tahoma, sans-serif;
         }
+
         .card {
-          position: relative;
           width: 100%;
-          max-width: 720px;
-          background: rgba(255, 255, 255, 0.24);
-          border: 1px solid rgba(255, 255, 255, 0.35);
-          border-radius: 20px;
-          padding: 20px;
+          max-width: 820px;
+          background: var(--card-bg);
+          border: 1px solid var(--card-brd);
+          border-radius: 16px;
+          padding: 16px;
           backdrop-filter: blur(12px);
           -webkit-backdrop-filter: blur(12px);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 10px 28px rgba(0,0,0,0.12);
         }
 
-        /* HEADER موبایل: عمودی و وسط‌چین */
         .header {
           display: flex;
-          flex-direction: column;
           align-items: center;
-          gap: 10px;
-          margin-bottom: 8px;
-        }
-        .logoWrap {
-          display: flex;
-          justify-content: center;
-        }
-        .logo {
-          border-radius: 8px;
-        }
-        .titles {
-          text-align: center;
-        }
-        .title {
-          margin: 0 0 4px 0;
-          font-size: 20px;
-          font-weight: 800;
-          color: #212529;
-        }
-        .subtitle {
-          margin: 0;
-          color: #333;
-          font-size: 14px;
+          gap: 12px;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          row-gap: 10px;
         }
 
-        .list {
+        .brand {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          min-width: 0;
+        }
+        .logo {
+          border-radius: 10px;
+          flex: 0 0 auto;
+        }
+        .titles {
+          min-width: 0;
+        }
+        .titles h1 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: 800;
+          color: var(--ink);
+          line-height: 1.2;
+        }
+        .titles p {
+          margin: 2px 0 0;
+          color: var(--muted);
+          font-size: 13px;
+          line-height: 1.2;
+        }
+
+        .btn {
+          padding: 10px 16px;
+          border-radius: 10px;
+          font-weight: 800;
+          cursor: pointer;
+          border: 1px solid #e7b800;
+          transition: transform .06s ease-in-out, box-shadow .12s ease;
+          box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+          white-space: nowrap;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btnAll {
+          background: var(--accent);
+          color: #222;
+        }
+        .btn[disabled] {
+          background: #ffeaa7;
+          cursor: not-allowed;
+          box-shadow: none;
+        }
+
+        .lead {
+          margin: 12px 2px 14px;
+          color: var(--muted);
+          font-size: 14px;
+          text-align: justify;
+        }
+
+        .grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 12px;
+          gap: 10px;
         }
+
         .item {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          background: rgba(255, 255, 255, 0.7);
-          border: 1px solid rgba(0, 0, 0, 0.05);
+          gap: 12px;
+          border: 1px solid var(--line);
+          background: rgba(255,255,255,0.75);
           border-radius: 12px;
           padding: 12px 14px;
-          gap: 12px;
         }
-        .itemInfo {
+        .info {
           display: flex;
           align-items: center;
           gap: 10px;
           min-width: 0;
         }
-        .badge {
-          display: inline-flex;
-          width: 36px;
-          height: 36px;
-          border-radius: 10px;
-          background: #ffe381;
-          align-items: center;
-          justify-content: center;
-          font-weight: 700;
+        .dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: var(--accent);
           flex: 0 0 auto;
+          box-shadow: 0 0 0 4px rgba(255,177,0,0.18);
         }
-        .meta {
-          line-height: 1.3;
-          min-width: 0;
-        }
+        .meta { min-width: 0; line-height: 1.3; }
         .name {
           font-weight: 700;
-          color: #212529;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          max-width: 52vw;
+          color: var(--ink);
+          overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+          max-width: 58vw;
         }
         .path {
           font-size: 12px;
           color: #666;
           direction: ltr;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          max-width: 52vw;
+          overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+          max-width: 58vw;
         }
 
-        .btn {
-          padding: 10px 14px;
-          border-radius: 10px;
-          font-weight: 700;
-          cursor: pointer;
-          transition: transform 0.06s ease-in-out;
-        }
-        .btn:active {
-          transform: translateY(1px);
-        }
         .btnSingle {
-          border: 1px solid #e7b800;
-          background: #ffd93d;
+          background: var(--accent-2);
+          color: #222;
         }
-        .btnSingle[disabled] {
-          background: #ffeaa7;
-          cursor: not-allowed;
-        }
-        .actions {
-          margin-top: 16px;
-          text-align: center;
-        }
-        .btnAll {
-          padding: 12px 18px;
-          border-radius: 12px;
-          border: 1px solid #e7b800;
-          background: #ffb100;
-          font-weight: 800;
-        }
-        .btnAll[disabled] {
-          background: #ffeaa7;
-          cursor: not-allowed;
-        }
+
         .status {
           margin-top: 10px;
           min-height: 22px;
@@ -281,37 +289,19 @@ export default function Landing() {
           max-width: 100%;
         }
 
-        /* ≥480px: لوگو absolute گوشه راست بالا + padding-top کارت برای جلوگیری از هم‌پوشانی */
+        /* اسکرین‌های متوسط و بزرگ‌تر */
         @media (min-width: 480px) {
-          .card {
-            padding: 28px 24px 24px;
-            padding-top: 88px; /* فضا برای لوگو */
-          }
-          .header {
-            align-items: center;
-            margin-bottom: 12px;
-          }
-          .logoWrap {
-            justify-content: flex-end;
-          }
-          .logo {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-          }
-          .title {
-            font-size: 22px;
-          }
-          .name, .path {
-            max-width: 60%;
-          }
+          .titles h1 { font-size: 20px; }
+          .titles p { font-size: 13.5px; }
         }
-
-        /* ≥700px: دو ستونه شدن لیست فایل‌ها */
         @media (min-width: 700px) {
-          .list {
-            grid-template-columns: 1fr 1fr;
-          }
+          .card { padding: 20px; }
+          .grid { grid-template-columns: 1fr 1fr; }
+          .name, .path { max-width: 40vw; }
+        }
+        @media (min-width: 920px) {
+          .titles h1 { font-size: 22px; }
+          .lead { font-size: 15px; }
         }
       `}</style>
     </>

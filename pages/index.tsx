@@ -73,7 +73,7 @@ export default function Home() {
             width={70}
             height={70}
             priority
-            style={{ position: "absolute", top: "20px", right: "20px" }}
+            style={{ position: "absolute", top: "10px", right: "20px" }}
           />
           <h1 className="title">سلام سلطان</h1>
           <p className="helper">برای دریافت، اطلاعاتت رو وارد کن</p>
