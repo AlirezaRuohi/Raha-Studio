@@ -69,7 +69,7 @@ export default function Landing() {
     <main className="page" dir="rtl">
       <section className="card" style={{ position: "relative", textAlign: "center", paddingTop: 72 }}>
         <Image
-          src="/logo.svg"
+          src="/logo.png"
           alt="لوگوی سایت"
           width={64}
           height={64}

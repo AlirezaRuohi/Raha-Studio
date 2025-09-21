@@ -60,7 +60,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     <main className="page" dir="rtl">
       <form className="card form" onSubmit={handleSubmit} noValidate>
         <Image
-          src="/logo.svg"
+          src="/logo.png"
           alt="لوگو سایت"
           width={70}
           height={70}
