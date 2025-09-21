@@ -85,9 +85,6 @@ export default function Landing() {
             </button>
           </header>
 
-          {/* توضیح کوتاه */}
-          <p className="lead">فایل‌های زیر آمادهٔ دانلود هستند. می‌توانید جداگانه یا همه را با هم دانلود کنید.</p>
-
           {/* لیست فایل‌ها */}
           <div className="grid">
             {files.map((f) => (
@@ -147,8 +144,7 @@ export default function Landing() {
         .card {
           width: 100%;
           max-width: 820px;
-          background: var(--card-bg);
-          border: 1px solid var(--card-brd);
+          
           border-radius: 16px;
           padding: 16px;
           backdrop-filter: blur(12px);
