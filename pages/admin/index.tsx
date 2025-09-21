@@ -1,3 +1,4 @@
+// pages/admin/index.tsx
 import Head from "next/head";
 import type { GetServerSideProps } from "next";
 
@@ -21,7 +22,8 @@ export default function Admin({ items, error }: { items: Item[]; error?: string 
 
         <div style={{ marginBottom: 16, textAlign: "center" }}>
           <a
-            href="https://rahastudio.com/api/export.php"
+            href="/api/export"  // اگر خروجی XLSX با Next می‌خواهی
+            // href="https://rahastudio.com/api/export.php" // اگر CSV از PHP می‌خواهی این را فعال کن
             className="btn btn--ghost"
             style={{
               display: "inline-block",
@@ -34,7 +36,7 @@ export default function Admin({ items, error }: { items: Item[]; error?: string 
               fontWeight: 500,
             }}
           >
-            📥 خروجی CSV
+            📥 خروجی اکسل
           </a>
         </div>
 
@@ -90,8 +92,16 @@ export default function Admin({ items, error }: { items: Item[]; error?: string 
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  // فقط اگر لاگین شده باشد (کوکی admin_auth=1) اجازه بده
+  const cookies = req.headers.cookie || "";
+  const authed = cookies.split(";").some(c => c.trim().startsWith("admin_auth=1"));
+  if (!authed) {
+    return { redirect: { destination: "/admin/login", permanent: false } };
+  }
+
   try {
+    // داده‌ها از PHP هاست
     const res = await fetch("https://rahastudio.com/api/list.php", { cache: "no-store" });
     if (!res.ok) {
       const text = await res.text();
