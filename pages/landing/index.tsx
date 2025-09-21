@@ -1,28 +1,20 @@
-// pages/landing/index.tsx
+import Head from "next/head";
 import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
+import type { GetServerSideProps } from "next";
 
 export default function Landing() {
   const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   const files = useMemo(
     () => [
-      { path: "/pdfs/trendy-insta-filters.pdf",                     label: "فیلترها.pdf" },
-      { path: "/pdfs/trendy-insta-filters-2025.pdf",                label: "فیلترهای-2025.pdf" },
+      { path: "/pdfs/trendy-insta-filters.pdf", label: "فیلترها.pdf" },
+      { path: "/pdfs/trendy-insta-filters-2025.pdf", label: "فیلترهای-2025.pdf" },
     ],
     []
   );
 
   const [errList, setErrList] = useState<string[]>([]);
-
-  const checkExists = async (url: string) => {
-    try {
-      const r = await fetch(url, { method: "HEAD" });
-      return r.ok;
-    } catch {
-      return false;
-    }
-  };
 
   const download = (url: string, filename: string) => {
     const a = document.createElement("a");
@@ -37,57 +29,63 @@ export default function Landing() {
 
   const downloadAll = useCallback(async () => {
     setErrList([]);
-    const items = files.map(f => ({
-      url: `${base}${f.path}`,
-      filename: f.label,
-    }));
-
-    const results = await Promise.all(items.map(it => checkExists(it.url)));
-
-    const missing: string[] = [];
-    items.forEach((it, i) => {
-      if (!results[i]) missing.push(it.url);
+    files.forEach((f) => {
+      download(`${base}${f.path}`, f.label);
     });
-
-    if (missing.length) {
-      setErrList(missing);
-      items.forEach((it, i) => {
-        if (results[i]) download(it.url, it.filename);
-      });
-      return;
-    }
-
-    items.forEach(it => download(it.url, it.filename));
   }, [base, files]);
 
   return (
-    <main className="page" dir="rtl">
-      <section className="card" style={{ position: "relative", textAlign: "center", paddingTop: 72 }}>
-        <Image
-          src="/logo.png"
-          alt="لوگوی سایت"
-          width={64}
-          height={64}
-          priority
-          style={{ position: "absolute", top: 16, right: 16 }}
-        />
+    <>
+      <Head>
+        <title>رها استودیو</title>
+      </Head>
+      <main className="page" dir="rtl">
+        <section
+          className="card"
+          style={{ position: "relative", textAlign: "center", paddingTop: 72 }}
+        >
+          <Image
+            src="/logo.png"
+            alt="لوگوی سایت"
+            width={64}
+            height={64}
+            priority
+            style={{ position: "absolute", top: 16, right: 16 }}
+          />
 
-        {/* <h1 className="title">رها استودیو</h1> */}
-        <h2 className="status">درخواست ثبت شد ✅</h2>
-        <p className="hel">سلطان فایل رو دانلود کن . تمام فیلترها هست</p>
+          <h2 className="status">ثبت‌نام با موفقیت انجام شد ✅</h2>
+          <p className="hel">فایل‌هایت آماده است</p>
 
-        <button className="btn" onClick={downloadAll}>📥  دانلود فایل ها PDF</button>
+          <button className="btn" onClick={downloadAll}>
+            📥 دانلود همه فایل‌ها
+          </button>
 
-        {errList.length > 0 && (
-          <div className="error" style={{ marginTop: 12, textAlign: "left", direction: "ltr" }}>
-            Some files were not found:
-            <ul>
-              {errList.map(u => <li key={u}><code>{u}</code></li>)}
-            </ul>
-            مسیرها را با نام واقعی فایل‌ها در فولدر <strong>public/pdfs</strong> تطبیق بده.
-          </div>
-        )}
-      </section>
-    </main>
+          {errList.length > 0 && (
+            <div
+              className="error"
+              style={{ marginTop: 12, textAlign: "left", direction: "ltr" }}
+            >
+              Some files were not found:
+              <ul>
+                {errList.map((u) => (
+                  <li key={u}>
+                    <code>{u}</code>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      </main>
+    </>
   );
 }
+
+// محافظت: اگر کوکی نداشت → ریدایرکت
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const hasCookie = (req.headers.cookie || "").includes("rahareg=1");
+  if (!hasCookie) {
+    return { redirect: { destination: "/", permanent: false } };
+  }
+  return { props: {} };
+};
