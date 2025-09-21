@@ -65,21 +65,23 @@ export default function Landing() {
 
       <main dir="rtl" className="page">
         <section className="card">
-          {/* لوگو */}
-          <div className="logoWrap">
-            <Image
-              src="/logo.png"
-              alt="لوگوی سایت"
-              width={64}
-              height={64}
-              priority
-              className="logo"
-            />
+          {/* Header */}
+          <div className="header">
+            <div className="logoWrap">
+              <Image
+                src="/logo.png"
+                alt="لوگوی سایت"
+                width={64}
+                height={64}
+                priority
+                className="logo"
+              />
+            </div>
+            <div className="titles">
+              <h1 className="title">درخواست ثبت شد ✅</h1>
+              <p className="subtitle">سلطان، فایل‌ها آمادهٔ دانلودن 👇</p>
+            </div>
           </div>
-
-          {/* تیتر */}
-          <h1 className="title">درخواست ثبت شد ✅</h1>
-          <p className="subtitle">سلطان، فایل‌ها آمادهٔ دانلودن 👇</p>
 
           {/* لیست فایل‌ها */}
           <div className="list">
@@ -119,7 +121,6 @@ export default function Landing() {
         </section>
       </main>
 
-      {/* سبک‌های ریسپانسیو با styled-jsx */}
       <style jsx>{`
         .page {
           min-height: 100vh;
@@ -144,33 +145,39 @@ export default function Landing() {
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
         }
 
-        /* لوگو – پیش‌فرض موبایل: وسط و استاتیک */
+        /* HEADER موبایل: عمودی و وسط‌چین */
+        .header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 8px;
+        }
         .logoWrap {
           display: flex;
           justify-content: center;
-          margin-bottom: 10px;
         }
         .logo {
           border-radius: 8px;
         }
-
+        .titles {
+          text-align: center;
+        }
         .title {
-          margin: 4px 0 6px 0;
+          margin: 0 0 4px 0;
           font-size: 20px;
           font-weight: 800;
           color: #212529;
-          text-align: center;
         }
         .subtitle {
-          margin: 0 0 16px;
-          text-align: center;
+          margin: 0;
           color: #333;
           font-size: 14px;
         }
 
         .list {
           display: grid;
-          grid-template-columns: 1fr; /* موبایل یک ستونه */
+          grid-template-columns: 1fr;
           gap: 12px;
         }
         .item {
@@ -210,7 +217,7 @@ export default function Landing() {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          max-width: 52vw; /* جلوگیری از شکستن layout در موبایل */
+          max-width: 52vw;
         }
         .path {
           font-size: 12px;
@@ -274,10 +281,15 @@ export default function Landing() {
           max-width: 100%;
         }
 
-        /* از عرض 480px به بالا: لوگو absolute می‌شود و فاصله‌ی هدر زیادتر */
+        /* ≥480px: لوگو absolute گوشه راست بالا + padding-top کارت برای جلوگیری از هم‌پوشانی */
         @media (min-width: 480px) {
           .card {
-            padding: 24px;
+            padding: 28px 24px 24px;
+            padding-top: 88px; /* فضا برای لوگو */
+          }
+          .header {
+            align-items: center;
+            margin-bottom: 12px;
           }
           .logoWrap {
             justify-content: flex-end;
@@ -289,14 +301,13 @@ export default function Landing() {
           }
           .title {
             font-size: 22px;
-            margin-top: 8px;
           }
           .name, .path {
             max-width: 60%;
           }
         }
 
-        /* از عرض 700px به بالا: دو ستونه کردن لیست فایل‌ها */
+        /* ≥700px: دو ستونه شدن لیست فایل‌ها */
         @media (min-width: 700px) {
           .list {
             grid-template-columns: 1fr 1fr;
