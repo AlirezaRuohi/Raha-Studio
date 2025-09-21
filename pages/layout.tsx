@@ -1,8 +1,3 @@
-export const metadata = {
-  title: "رها استودیو",
-  description: "ثبت نام در رها استودیو",
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fa" dir="rtl">

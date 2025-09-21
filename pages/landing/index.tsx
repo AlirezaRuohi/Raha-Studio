@@ -8,7 +8,6 @@ export default function Landing() {
 
   const files = useMemo(
     () => [
-      { path: "/pdfs/independence-day-chatgpt-prompts-tecrazy.pdf", label: "راهنما.pdf" },
       { path: "/pdfs/trendy-insta-filters.pdf",                     label: "فیلترها.pdf" },
       { path: "/pdfs/trendy-insta-filters-2025.pdf",                label: "فیلترهای-2025.pdf" },
     ],
@@ -82,7 +81,7 @@ export default function Landing() {
         <h2 className="status">ثبت‌نام با موفقیت انجام شد ✅</h2>
         <p className="helper">برای دریافت همه فایل‌ها، روی دکمه زیر کلیک کنید.</p>
 
-        <button className="btn" onClick={downloadAll}>📥 دانلود همزمان ۳ فایل PDF</button>
+        <button className="btn" onClick={downloadAll}>📥 دانلود همزمان 2 فایل PDF</button>
 
         {errList.length > 0 && (
           <div className="error" style={{ marginTop: 12, textAlign: "left", direction: "ltr" }}>
