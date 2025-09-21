@@ -16,7 +16,7 @@ export default function Admin() {
 
         {/* دکمه/لینک خروجی CSV از PHP روی هاست */}
         <a
-          href={`http://rahastudio.com/api/export.php?key=${encodeURIComponent(adminKey)}`}
+          href={`https://rahastudio.com/api/export.php?key=${encodeURIComponent(adminKey)}`}
           className="btn btn--ghost"
           style={{ display: "inline-block", marginTop: 12 }}
         >
