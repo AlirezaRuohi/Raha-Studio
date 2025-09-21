@@ -34,7 +34,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     form.append("lastName", lastName);
     form.append("phone", phone);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/save.php`, {
+    const res = await fetch(`https://rahastudio.com/api/save.php`, {
       method: "POST",
       body: form,
       // اگر دامنه‌ها متفاوت‌اند و CORS خطا داد:
