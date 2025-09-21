@@ -79,8 +79,8 @@ export default function Landing() {
                 className="logo"
               />
               <div className="titles">
-                <h1>دانلود فایل‌ها</h1>
-                <p>ثبت‌نام با موفقیت انجام شد ✅</p>
+                <h1>درخواست ثبت شد ✅</h1>
+                <p>سلطان فایل رو دانلود کن . تمام فیلترها هست</p>
               </div>
             </div>
 

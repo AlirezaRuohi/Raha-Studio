@@ -105,7 +105,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 };
 
-// استایل‌های جدول
 const thStyle: React.CSSProperties = {
   padding: "12px 16px",
   borderBottom: "2px solid #e0c200",
