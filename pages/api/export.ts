@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import connect from "../../lib/mongodb";
+import connect from "../../lib/mysql";
 import Registration from "../../models/Registration";
 import * as XLSX from "xlsx";
 
