@@ -67,8 +67,8 @@ const handleSubmit = async (e: React.FormEvent) => {
           priority
           style={{position:"absolute",top:"20px",right:"20px"}}
         />
-        <h1 className="title">فرم ثبت‌ نام</h1>
-        <p className="helper">نام و نام خانوادگی فارسی + موبایل </p>
+        <h1 className="title">سلام سلطان خوبی</h1>
+        <p className="helper">اطلاعاتتو وارد کن تا بهت بگم 💛</p>
 
         <div className="field">
           <label className="label" htmlFor="firstName">

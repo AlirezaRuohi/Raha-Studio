@@ -77,11 +77,11 @@ export default function Landing() {
           style={{ position: "absolute", top: 16, right: 16 }}
         />
 
-        <h1 className="title">رها استودیو</h1>
-        <h2 className="status">ثبت‌نام با موفقیت انجام شد ✅</h2>
-        <p className="helper">برای دریافت همه فایل‌ها، روی دکمه زیر کلیک کنید.</p>
+        {/* <h1 className="title">رها استودیو</h1> */}
+        <h2 className="status">درخواست ثبت شد ✅</h2>
+        <p className="hel">سلطان فایل رو دانلود کن . تمام فیلترها هست</p>
 
-        <button className="btn" onClick={downloadAll}>📥 دانلود همزمان 2 فایل PDF</button>
+        <button className="btn" onClick={downloadAll}>📥  دانلود فایل ها PDF</button>
 
         {errList.length > 0 && (
           <div className="error" style={{ marginTop: 12, textAlign: "left", direction: "ltr" }}>
