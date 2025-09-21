@@ -19,33 +19,42 @@ export default function Home() {
     setPhone(s);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
 
-    if (!persianNameRegex.test(firstName.trim()))
-      return setError("نام باید فارسی باشد");
-    if (!persianNameRegex.test(lastName.trim()))
-      return setError("نام خانوادگی باید فارسی باشد");
-    if (!iranMobileRegex.test(phone.trim()))
-      return setError("شماره موبایل معتبر نیست");
+  if (!persianNameRegex.test(firstName.trim())) return setError("نام باید فارسی باشد");
+  if (!persianNameRegex.test(lastName.trim()))  return setError("نام خانوادگی باید فارسی باشد");
+  if (!iranMobileRegex.test(phone.trim()))      return setError("شماره موبایل معتبر نیست");
 
-    setLoading(true);
-    try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, lastName, phone }),
-      });
-      if (res.ok) router.push("/landing");
-      else {
-        const data = await res.json().catch(() => ({}));
-        setError(data.message || "خطا در ثبت");
-      }
-    } finally {
-      setLoading(false);
+  setLoading(true);
+  try {
+    const form = new FormData();
+    form.append("firstName", firstName);
+    form.append("lastName", lastName);
+    form.append("phone", phone);
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/save.php`, {
+      method: "POST",
+      body: form,
+      // اگر دامنه‌ها متفاوت‌اند و CORS خطا داد:
+      // mode: "cors",
+      // credentials: "omit",
+    });
+
+    if (res.ok) {
+      router.push("/landing");
+    } else {
+      const data = await res.json().catch(() => ({}));
+      setError(data.message || "خطا در ذخیره اطلاعات");
     }
-  };
+  } catch (err: any) {
+    setError(err.message || "خطا در برقراری ارتباط");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <main className="page" dir="rtl">
