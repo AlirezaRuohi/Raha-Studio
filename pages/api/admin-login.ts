@@ -7,8 +7,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const { username, password } = req.body || {};
 
-  const ADMIN_USER = process.env.ADMIN_USER || "admin";
-  const ADMIN_PASS = process.env.ADMIN_PASS || "1234";
+  const ADMIN_USER = process.env.ADMIN_USER ;
+  const ADMIN_PASS = process.env.ADMIN_PASS ;
 
   if (username === ADMIN_USER && password === ADMIN_PASS) {
     // ست‌کردن کوکی سشن
