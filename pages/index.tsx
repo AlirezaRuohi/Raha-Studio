@@ -1,3 +1,4 @@
+// pages/index.tsx
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -45,9 +46,7 @@ export default function Home() {
       });
 
       if (res.ok) {
-        // ست‌کردن کوکی
-        document.cookie =
-          "rahareg=1; Path=/; Max-Age=7776000; SameSite=Lax; Secure";
+        document.cookie = "rahareg=1; Path=/; Max-Age=7776000; SameSite=Lax; Secure";
         router.push("/landing");
       } else {
         const data = await res.json().catch(() => ({}));
@@ -63,25 +62,20 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>رها استودیو</title>
+        <title>رها استودیو | ثبت‌نام</title>
       </Head>
-      <main className="page" dir="rtl">
-        <form className="card form" onSubmit={handleSubmit} noValidate>
-          <Image
-            src="/logo.png"
-            alt="لوگو سایت"
-            width={70}
-            height={70}
-            priority
-            style={{ position: "absolute", top: "10px", right: "20px" }}
-          />
-          <h1 className="title">سلام سلطان</h1>
-          <p className="helper">برای دریافت، اطلاعاتت رو وارد کن</p>
 
-          <div className="field">
-            <label className="label" htmlFor="firstName">
-              نام (فارسی)
-            </label>
+      <main className="wrap" dir="rtl">
+        <section className="card">
+          <div className="logoWrap">
+            <Image src="/logo.png" alt="لوگو" width={72} height={72} priority className="logo" />
+          </div>
+
+          <h1 className="title">سلام سلطان</h1>
+          <p className="subtitle">برای دریافت، اطلاعاتت رو وارد کن</p>
+
+          <form onSubmit={handleSubmit} noValidate>
+            <label className="label" htmlFor="firstName">نام (فارسی)</label>
             <input
               id="firstName"
               className="input"
@@ -92,12 +86,8 @@ export default function Home() {
               inputMode="text"
               dir="rtl"
             />
-          </div>
 
-          <div className="field">
-            <label className="label" htmlFor="lastName">
-              نام خانوادگی (فارسی)
-            </label>
+            <label className="label" htmlFor="lastName">نام خانوادگی (فارسی)</label>
             <input
               id="lastName"
               className="input"
@@ -108,12 +98,8 @@ export default function Home() {
               inputMode="text"
               dir="rtl"
             />
-          </div>
 
-          <div className="field">
-            <label className="label" htmlFor="phone">
-              شماره موبایل
-            </label>
+            <label className="label" htmlFor="phone">شماره موبایل</label>
             <input
               id="phone"
               className="input"
@@ -121,21 +107,114 @@ export default function Home() {
               type="tel"
               inputMode="numeric"
               dir="ltr"
-              pattern="^(?:\+?98|0)?9\d{9}$"
+              pattern="^(?:\\+?98|0)?9\\d{9}$"
               maxLength={13}
               value={phone}
               onChange={(e) => onPhoneChange(e.target.value)}
               required
             />
-          </div>
 
-          {error && <p className="error">{error}</p>}
+            {error && <div className="error">{error}</div>}
 
-          <button className="btn" type="submit" disabled={loading}>
-            {loading ? "در حال ثبت..." : "ثبت اطلاعات"}
-          </button>
-        </form>
+            <button className="btn" type="submit" disabled={loading}>
+              {loading ? "در حال ثبت…" : "ثبت اطلاعات"}
+            </button>
+          </form>
+        </section>
       </main>
+
+      <style jsx>{`
+        .wrap {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, #ffd93d, #ffb100);
+          padding: 24px 12px;
+          
+        }
+        .card {
+          position: relative;
+          width: 100%;
+          max-width: 420px;
+          background: rgba(255,255,255,0.24);
+          border: 1px solid rgba(255,255,255,0.35);
+          border-radius: 20px;
+          padding: 24px;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+        .logoWrap {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 10px;
+        }
+        .logo {
+          border-radius: 10px;
+        }
+        .title {
+          margin: 8px 0 4px;
+          font-size: 22px;
+          font-weight: 800;
+          text-align: center;
+          color: #212529;
+        }
+        .subtitle {
+          margin: 0 0 20px;
+          text-align: center;
+          color: #333;
+          font-size: 14px;
+        }
+        .label {
+          font-size: 13px;
+          font-weight: 600;
+          color: #333;
+          margin-top: 8px;
+        }
+        .input {
+          width: 100%;
+          padding: 12px 12px;
+          margin-top: 4px;
+          border: 1px solid rgba(0,0,0,0.08);
+          border-radius: 12px;
+          background: rgba(255,255,255,0.85);
+          font-size: 14px;
+          outline: none;
+        }
+        .input:focus {
+          border-color: #e0b000;
+          box-shadow: 0 0 0 3px rgba(255,185,0,0.18);
+        }
+        .btn {
+          margin-top: 16px;
+          width: 100%;
+          padding: 12px 16px;
+          border-radius: 12px;
+          border: 1px solid #e7b800;
+          background: #ffb100;
+          font-weight: 800;
+          cursor: pointer;
+          transition: transform 0.06s ease-in-out;
+        }
+        .btn:active {
+          transform: translateY(1px);
+        }
+        .btn[disabled] {
+          background: #ffeaa7;
+          cursor: not-allowed;
+        }
+        .error {
+          margin-top: 12px;
+          background: #ffe6e6;
+          border: 1px solid #ffb3b3;
+          color: #b10000;
+          padding: 10px 12px;
+          border-radius: 12px;
+          font-size: 13px;
+          text-align: center;
+        }
+      `}</style>
     </>
   );
 }

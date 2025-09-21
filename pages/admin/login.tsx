@@ -106,7 +106,7 @@ export default function AdminLogin() {
           display: flex; align-items: center; justify-content: center;
           background: linear-gradient(135deg, var(--bg1), var(--bg2));
           padding: 24px 12px;
-          font-family: Tahoma, sans-serif;
+          
         }
         .card {
           width: 100%; max-width: 480px;
