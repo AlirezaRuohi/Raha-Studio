@@ -1,45 +1,60 @@
 // pages/api/export.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getPool } from "../../lib/mysql";
+import { createPool } from "mysql2/promise";
 import * as XLSX from "xlsx";
-import type { RowDataPacket } from "mysql2";
 
 type Row = { نام: string; "نام‌خانوادگی": string; موبایل: string };
 
-interface RegRow extends RowDataPacket {
-  firstName: string;
-  lastName: string;
-  phone: string;
-}
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "GET") return res.status(405).end();
-
-  const key = req.query.key as string | undefined;
-  if (key !== process.env.ADMIN_KEY) return res.status(403).json({ message: "forbidden" });
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).end("Method Not Allowed");
+  }
 
   try {
-    const pool = getPool();
-    const [rows] = await pool.query<RegRow[]>(
-      "SELECT firstName, lastName, phone FROM registrations ORDER BY createdAt DESC"
+    // دیتابیس با env vars (در Vercel یا .env.local ست کن)
+    const pool = createPool({
+      host: process.env.DB_HOST || "localhost",
+      user: process.env.DB_USER || "",
+      password: process.env.DB_PASS || "",
+      database: process.env.DB_NAME || "",
+      waitForConnections: true,
+      connectionLimit: 5,
+      queueLimit: 0,
+      // اگر پورت متفاوت است میتونی port: Number(process.env.DB_PORT) اضافه کنی
+    });
+
+    const [rows] = await pool.query(
+      "SELECT firstName, lastName, phone, createdAt FROM registrations ORDER BY createdAt DESC"
     );
 
-    const data: Row[] = rows.map((r) => ({
-      "نام": r.firstName,
-      "نام‌خانوادگی": r.lastName,
-      "موبایل": r.phone,
+    // map به خروجی فارسی-friendly
+    const data: Row[] = (rows as any[]).map((r) => ({
+      نام: r.firstName ?? "",
+      "نام‌خانوادگی": r.lastName ?? "",
+      موبایل: r.phone ?? "",
     }));
 
+    // ساخت شیت و ورک‌بوک
     const ws = XLSX.utils.json_to_sheet<Row>(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "ثبت‌نام‌ها");
+
+    // تولید بافر باینری
     const buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
 
-    res.setHeader('Content-Disposition', 'attachment; filename="registrations.xlsx"');
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    return res.send(buf);
-  } catch (e: any) {
-    console.error("export error:", e);
-    return res.status(500).json({ message: e.message || "export failed" });
+    // هدرها و ارسال
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="registrations.xlsx"'
+    );
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.send(buf);
+  } catch (err: any) {
+    console.error("export error:", err);
+    return res.status(500).json({ message: err?.message || "export failed" });
   }
 }
