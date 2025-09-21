@@ -87,6 +87,7 @@ export default function Landing() {
             <button
               onClick={downloadAll}
               disabled={busy}
+              style={{margin: "0 0 20px 0"}}
               className="btn btnAll"
               aria-label="دانلود همه فایل‌ها"
             >
