@@ -22,8 +22,8 @@ export default function Admin({ items, error }: { items: Item[]; error?: string 
 
         <div style={{ marginBottom: 16, textAlign: "center" }}>
           <a
-            href="/api/export"  // اگر خروجی XLSX با Next می‌خواهی
-            // href="https://rahastudio.com/api/export.php" // اگر CSV از PHP می‌خواهی این را فعال کن
+            //href="/api/export"  // اگر خروجی XLSX با Next می‌خواهی
+           href="https://rahastudio.com/api/export.php" // اگر CSV از PHP می‌خواهی این را فعال کن
             className="btn btn--ghost"
             style={{
               display: "inline-block",
@@ -36,7 +36,7 @@ export default function Admin({ items, error }: { items: Item[]; error?: string 
               fontWeight: 500,
             }}
           >
-            📥 خروجی اکسل
+            📥 خروجی cvs
           </a>
         </div>
 
