@@ -12,7 +12,10 @@ export default function Landing() {
   const files = useMemo<FileItem[]>(
     () => [
       { path: "/pdfs/trendy-insta-filters.pdf", label: "فیلترها.pdf" },
-      { path: "/pdfs/trendy-insta-filters-2025.pdf", label: "فیلترهای-2025.pdf" },
+      {
+        path: "/pdfs/trendy-insta-filters-2025.pdf",
+        label: "فیلترهای-2025.pdf",
+      },
     ],
     []
   );
@@ -68,7 +71,13 @@ export default function Landing() {
           {/* هدر */}
           <header className="header">
             <div className="brand">
-              <Image src="/logo.png" alt="لوگوی سایت" width={54} height={54} className="logo" />
+              <Image
+                src="/logo.png"
+                alt="لوگوی سایت"
+                width={54}
+                height={54}
+                className="logo"
+              />
               <div className="titles">
                 <h1>دانلود فایل‌ها</h1>
                 <p>ثبت‌نام با موفقیت انجام شد ✅</p>
@@ -92,8 +101,12 @@ export default function Landing() {
                 <div className="info">
                   <span className="dot" aria-hidden />
                   <div className="meta">
-                    <div className="name" title={f.label}>{f.label}</div>
-                    <div className="path" title={f.path}>{f.path}</div>
+                    <div className="name" title={f.label}>
+                      {f.label}
+                    </div>
+                    <div className="path" title={f.path}>
+                      {f.path}
+                    </div>
                   </div>
                 </div>
                 <button
@@ -111,7 +124,9 @@ export default function Landing() {
           {/* وضعیت */}
           <div className="status">
             {busy && <span>در حال آماده‌سازی دانلود…</span>}
-            {!busy && done.length > 0 && !err && <span>دانلود {done.length} فایل انجام شد.</span>}
+            {!busy && done.length > 0 && !err && (
+              <span>دانلود {done.length} فایل انجام شد.</span>
+            )}
             {err && <div className="error">{err}</div>}
           </div>
         </section>
@@ -122,13 +137,13 @@ export default function Landing() {
         :root {
           --bg1: #ffd93d;
           --bg2: #ffb100;
-          --card-bg: rgba(255,255,255,0.28);
-          --card-brd: rgba(255,255,255,0.38);
+          --card-bg: rgba(255, 255, 255, 0.28);
+          --card-brd: rgba(255, 255, 255, 0.38);
           --ink: #212529;
           --muted: #555;
           --accent: #ffb100;
           --accent-2: #ffd93d;
-          --line: rgba(0,0,0,0.06);
+          --line: rgba(0, 0, 0, 0.06);
         }
 
         .page {
@@ -144,12 +159,12 @@ export default function Landing() {
         .card {
           width: 100%;
           max-width: 820px;
-          
+
           border-radius: 16px;
           padding: 16px;
           backdrop-filter: blur(12px);
           -webkit-backdrop-filter: blur(12px);
-          box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
         }
 
         .header {
@@ -194,11 +209,13 @@ export default function Landing() {
           font-weight: 800;
           cursor: pointer;
           border: 1px solid #e7b800;
-          transition: transform .06s ease-in-out, box-shadow .12s ease;
-          box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+          transition: transform 0.06s ease-in-out, box-shadow 0.12s ease;
+          box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
           white-space: nowrap;
         }
-        .btn:active { transform: translateY(1px); }
+        .btn:active {
+          transform: translateY(1px);
+        }
         .btnAll {
           background: var(--accent);
           color: #222;
@@ -225,10 +242,11 @@ export default function Landing() {
         .item {
           display: flex;
           align-items: center;
+          flex-direction: column;
           justify-content: space-between;
           gap: 12px;
           border: 1px solid var(--line);
-          background: rgba(255,255,255,0.75);
+          background: rgba(255, 255, 255, 0.75);
           border-radius: 12px;
           padding: 12px 14px;
         }
@@ -244,20 +262,27 @@ export default function Landing() {
           border-radius: 50%;
           background: var(--accent);
           flex: 0 0 auto;
-          box-shadow: 0 0 0 4px rgba(255,177,0,0.18);
+          box-shadow: 0 0 0 4px rgba(255, 177, 0, 0.18);
         }
-        .meta { min-width: 0; line-height: 1.3; }
+        .meta {
+          min-width: 0;
+          line-height: 1.3;
+        }
         .name {
           font-weight: 700;
           color: var(--ink);
-          overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
           max-width: 58vw;
         }
         .path {
           font-size: 12px;
           color: #666;
           direction: ltr;
-          overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
           max-width: 58vw;
         }
 
@@ -287,17 +312,32 @@ export default function Landing() {
 
         /* اسکرین‌های متوسط و بزرگ‌تر */
         @media (min-width: 480px) {
-          .titles h1 { font-size: 20px; }
-          .titles p { font-size: 13.5px; }
+          .titles h1 {
+            font-size: 20px;
+          }
+          .titles p {
+            font-size: 13.5px;
+          }
         }
         @media (min-width: 700px) {
-          .card { padding: 20px; }
-          .grid { grid-template-columns: 1fr 1fr; }
-          .name, .path { max-width: 40vw; }
+          .card {
+            padding: 20px;
+          }
+          .grid {
+            grid-template-columns: 1fr 1fr;
+          }
+          .name,
+          .path {
+            max-width: 40vw;
+          }
         }
         @media (min-width: 920px) {
-          .titles h1 { font-size: 22px; }
-          .lead { font-size: 15px; }
+          .titles h1 {
+            font-size: 22px;
+          }
+          .lead {
+            font-size: 15px;
+          }
         }
       `}</style>
     </>
